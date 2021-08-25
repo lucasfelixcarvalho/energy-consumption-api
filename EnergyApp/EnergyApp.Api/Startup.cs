@@ -2,6 +2,9 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EnergyApp.Domain.Event;
+using EnergyApp.Domain.Meter;
+using EnergyApp.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.HttpsPolicy;
@@ -26,6 +29,9 @@ namespace EnergyApp.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddSingleton<IMeterRepository, MeterRepository>();            
+            services.AddScoped<IEventService, EventService>();
+            services.AddScoped<IMeterService, MeterService>();
 
             services.AddControllers();
             services.AddSwaggerGen(c =>

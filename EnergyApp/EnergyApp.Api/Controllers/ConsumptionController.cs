@@ -1,4 +1,5 @@
 using System;
+using EnergyApp.Domain.Meter;
 using Microsoft.AspNetCore.Mvc;
 
 namespace EnergyApp.Api.Controllers
@@ -7,9 +8,11 @@ namespace EnergyApp.Api.Controllers
     [Route("api/{controller}")]
     public class ConsumptionController : ControllerBase
     {
-        public ConsumptionController()
+        private readonly IMeterService _MeterService;
+        
+        public ConsumptionController(IMeterService meterService)
         {
-            
+            _MeterService = meterService;
         }
 
         [HttpGet("ping")]
@@ -21,7 +24,14 @@ namespace EnergyApp.Api.Controllers
         [HttpGet()]
         public IActionResult GetConsumptionForMeter(string meter_number)
         {
-            return NotFound(meter_number);
+            decimal? consumption = _MeterService.GetConsumptionForMeter(meter_number);
+
+            if (consumption  is null)
+            {
+                return NotFound();
+            }
+
+            return Ok(consumption);
         }
     }
 }
