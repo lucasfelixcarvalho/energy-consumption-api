@@ -1,4 +1,5 @@
 using System;
+using EnergyApp.Domain.Consumption;
 using EnergyApp.Domain.Event;
 using EnergyApp.Domain.Meter.Dto;
 using Microsoft.AspNetCore.Mvc;
@@ -22,11 +23,25 @@ namespace EnergyApp.Api.Controllers
             return Ok($"Ping successfull: {DateTime.Now:yyyy-MMM-dd HH:mm:ss}");
         }
 
+        // [HttpPost]
+        // public IActionResult InsertNewMeter(MeterDto meter)
+        // {
+        //     _EventService.InsertMeter(meter);
+        //     return Ok();
+        // }
+
+        // [HttpPost]
+        // public IActionResult InsertMeterConsumption(ConsumptionDto consumption)
+        // {
+        //     MeterDto meter = _EventService.UpdateMeterConsumption(consumption);
+        //     return Created("", meter);
+        // }
+
         [HttpPost]
-        public IActionResult InsertNewMeter(MeterDto meter)
+        public IActionResult HandleEvent(EventDto eventData)
         {
-            _EventService.InsertMeter(meter);
-            return Ok();
+            var returnData = _EventService.HandleEvent(eventData);
+            return Ok(returnData);
         }
     }
 }
