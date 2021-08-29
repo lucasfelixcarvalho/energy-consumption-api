@@ -1,3 +1,4 @@
+using EnergyApp.Domain.Billing.Dto;
 using EnergyApp.Domain.Consumption;
 using EnergyApp.Domain.Meter.Dto;
 
@@ -8,5 +9,6 @@ namespace EnergyApp.Domain.Meter
         void InsertMeter(MeterDto meter);
         decimal? GetConsumptionForMeter(string meter_number);
         MeterDto UpdateMeterConsumption(ConsumptionDto consumption);
+        MeterDto UpdateBillingConsumption(BillingDto billing);
     }
 }

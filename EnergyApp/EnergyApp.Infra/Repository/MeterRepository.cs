@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using EnergyApp.Domain.Billing.Dto;
 using EnergyApp.Domain.Consumption;
 using EnergyApp.Domain.Meter;
 using EnergyApp.Domain.Meter.Dto;
@@ -29,6 +30,18 @@ namespace EnergyApp.Infra.Repository
             }
 
             _Meters.Add(meter);
+        }
+
+        public MeterDto UpdateBillingConsumption(BillingDto billing)
+        {
+            if (!_Meters.Any(m => m.MeterNumber == billing.MeterNumber))
+            {
+                return null;
+            }
+
+            int meterIndex = _Meters.FindIndex(0, _Meters.Count, m => m.MeterNumber == billing.MeterNumber);
+            _Meters[meterIndex].Unit = billing.Unit;            
+            return _Meters[meterIndex];
         }
 
         public MeterDto UpdateMeterConsumption(ConsumptionDto consumption)

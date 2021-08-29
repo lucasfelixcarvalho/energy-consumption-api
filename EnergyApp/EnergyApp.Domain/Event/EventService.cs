@@ -1,3 +1,4 @@
+using EnergyApp.Domain.Billing.Dto;
 using EnergyApp.Domain.Consumption;
 using EnergyApp.Domain.Meter;
 using EnergyApp.Domain.Meter.Dto;
@@ -20,6 +21,7 @@ namespace EnergyApp.Domain.Event
                 return null;
             }
 
+            // TODO: factory
             if (eventData.Type == "import")
             {
                 MeterDto meter = eventData.EventToMeter();
@@ -31,6 +33,23 @@ namespace EnergyApp.Domain.Event
                 ConsumptionDto consumption = eventData.EventToConsumption();
                 MeterDto meter = _MeterRepository.UpdateMeterConsumption(consumption);
                 return meter;
+            }
+            else if (eventData.Type == "billing")
+            {
+                BillingDto billing = eventData.EventToBilling();
+                MeterDto meter = _MeterRepository.UpdateBillingConsumption(billing);
+                if (meter is null)
+                {
+                    return null;
+                }
+                
+                BillingResponseDto billingResponse = new BillingResponseDto
+                {
+                    MeterNumber = meter.MeterNumber,
+                    Cash = meter.Unit * 35
+                };
+
+                return billingResponse;
             }
 
             return null;

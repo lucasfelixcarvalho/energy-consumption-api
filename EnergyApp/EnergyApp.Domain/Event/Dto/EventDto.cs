@@ -1,3 +1,4 @@
+using EnergyApp.Domain.Billing.Dto;
 using EnergyApp.Domain.Consumption;
 using EnergyApp.Domain.Event.Dto;
 using EnergyApp.Domain.Meter.Dto;
@@ -14,6 +15,7 @@ namespace EnergyApp.Domain.Event
         public decimal InjectedEnergy { get; set; }
         public decimal Unit { get; set; }
 
+        //TODO: extract to static converter class
         public ConsumptionDto EventToConsumption()
         {
             return new ConsumptionDto
@@ -31,6 +33,15 @@ namespace EnergyApp.Domain.Event
                 MeterNumber = this.MeterNumber,
                 Consumption = this.Consumption,
                 Microgeneration = this.Microgeneration
+            };
+        }
+
+        public BillingDto EventToBilling()
+        {
+            return new BillingDto
+            {
+                MeterNumber = this.MeterNumber,
+                Unit = this.Unit
             };
         }
     }
