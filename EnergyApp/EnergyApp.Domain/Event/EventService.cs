@@ -46,23 +46,13 @@ namespace EnergyApp.Domain.Event
                 BillingResponseDto billingResponse = new BillingResponseDto
                 {
                     MeterNumber = meter.MeterNumber,
-                    Cash = meter.Unit * 35
+                    Cash = meter.Unit * 330
                 };
 
                 return billingResponse;
             }
 
             return null;
-        }
-
-        public void InsertMeter(MeterDto meter)
-        {
-            _MeterRepository.InsertMeter(meter);
-        }
-
-        public MeterDto UpdateMeterConsumption(ConsumptionDto consumption)
-        {
-            return _MeterRepository.UpdateMeterConsumption(consumption);
         }
     }
 }

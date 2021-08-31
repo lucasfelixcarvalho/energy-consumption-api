@@ -17,6 +17,11 @@ namespace EnergyApp.Domain.Meter
             return _MeterRepository.GetConsumptionForMeter(meter_number);
         }
 
+        public decimal? GetMicrogenerationForMeter(string meter_number)
+        {
+            return _MeterRepository.GetMicrogenerationForMeter(meter_number);
+        }
+
         public MeterDto UpdateMeterConsumption(ConsumptionDto consumption)
         {
             return _MeterRepository.UpdateMeterConsumption(consumption);

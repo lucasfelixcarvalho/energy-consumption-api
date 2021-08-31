@@ -8,6 +8,7 @@ namespace EnergyApp.Domain.Meter
     {
         void InsertMeter(MeterDto meter);
         decimal? GetConsumptionForMeter(string meter_number);
+        decimal? GetMicrogenerationForMeter(string meter_number);
         MeterDto UpdateMeterConsumption(ConsumptionDto consumption);
         MeterDto UpdateBillingConsumption(BillingDto billing);
     }

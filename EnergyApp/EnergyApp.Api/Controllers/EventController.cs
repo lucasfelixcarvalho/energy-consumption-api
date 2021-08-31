@@ -23,25 +23,17 @@ namespace EnergyApp.Api.Controllers
             return Ok($"Ping successfull: {DateTime.Now:yyyy-MMM-dd HH:mm:ss}");
         }
 
-        // [HttpPost]
-        // public IActionResult InsertNewMeter(MeterDto meter)
-        // {
-        //     _EventService.InsertMeter(meter);
-        //     return Ok();
-        // }
-
-        // [HttpPost]
-        // public IActionResult InsertMeterConsumption(ConsumptionDto consumption)
-        // {
-        //     MeterDto meter = _EventService.UpdateMeterConsumption(consumption);
-        //     return Created("", meter);
-        // }
-
         [HttpPost]
         public IActionResult HandleEvent(EventDto eventData)
         {
             var returnData = _EventService.HandleEvent(eventData);
-            return Ok(returnData);
+            
+            if (returnData is null)
+            {
+                return NotFound(0);
+            }
+
+            return Created("", new { meter = returnData });
         }
     }
 }

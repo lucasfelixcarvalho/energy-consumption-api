@@ -22,6 +22,12 @@ namespace EnergyApp.Infra.Repository
             return meter?.Consumption ?? null;
         }
 
+        public decimal? GetMicrogenerationForMeter(string meter_number)
+        {
+            MeterDto meter = _Meters.FirstOrDefault(m => m.MeterNumber == meter_number);
+            return meter?.Microgeneration ?? null;
+        }
+
         public void InsertMeter(MeterDto meter)
         {
             if (_Meters.Any(m => m.MeterNumber == meter.MeterNumber))

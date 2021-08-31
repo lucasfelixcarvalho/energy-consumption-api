@@ -6,11 +6,11 @@ namespace EnergyApp.Api.Controllers
 {
     [ApiController]
     [Route("api/{controller}")]
-    public class ConsumptionController : ControllerBase
+    public class MicrogenerationController : ControllerBase
     {
         private readonly IMeterService _MeterService;
         
-        public ConsumptionController(IMeterService meterService)
+        public MicrogenerationController(IMeterService meterService)
         {
             _MeterService = meterService;
         }
@@ -22,16 +22,16 @@ namespace EnergyApp.Api.Controllers
         }
 
         [HttpGet()]
-        public IActionResult GetConsumptionForMeter(string meter_number)
+        public IActionResult GetMicrogenerationForMeter(string meter_number)
         {
-            decimal? consumption = _MeterService.GetConsumptionForMeter(meter_number);
+            decimal? microgeneration = _MeterService.GetMicrogenerationForMeter(meter_number);
 
-            if (consumption is null)
+            if (microgeneration is null)
             {
                 return NotFound(0);
             }
 
-            return Ok(consumption);
+            return Ok(microgeneration);
         }
     }
 }
