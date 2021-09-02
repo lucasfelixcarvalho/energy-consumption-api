@@ -1,5 +1,3 @@
-using EnergyApp.Domain.Event.Dto;
-
 namespace EnergyApp.Domain.Consumption
 {
     public class ConsumptionDto

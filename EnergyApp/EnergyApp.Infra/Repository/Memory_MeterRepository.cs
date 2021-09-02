@@ -7,11 +7,11 @@ using EnergyApp.Domain.Meter.Dto;
 
 namespace EnergyApp.Infra.Repository
 {
-    public class MeterRepository : IMeterRepository
+    public class Memory_MeterRepository : IMeterRepository
     {
         private readonly List<MeterDto> _Meters;
         
-        public MeterRepository()
+        public Memory_MeterRepository()
         {
             _Meters = new List<MeterDto>();
         }

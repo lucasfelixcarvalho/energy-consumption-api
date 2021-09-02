@@ -1,7 +1,5 @@
-using EnergyApp.Domain.Billing.Dto;
-using EnergyApp.Domain.Consumption;
+using EnergyApp.Domain.Event.Handlers;
 using EnergyApp.Domain.Meter;
-using EnergyApp.Domain.Meter.Dto;
 
 namespace EnergyApp.Domain.Event
 {
@@ -21,35 +19,10 @@ namespace EnergyApp.Domain.Event
                 return null;
             }
 
-            // TODO: factory
-            if (eventData.Type == "import")
+            IEventHandler handler = new HandlerFactory(_MeterRepository).GetHandler(eventData.Type);
+            if (handler is not null)
             {
-                MeterDto meter = eventData.EventToMeter();
-                _MeterRepository.InsertMeter(meter);
-                return meter;
-            }
-            else if (eventData.Type == "push")
-            {
-                ConsumptionDto consumption = eventData.EventToConsumption();
-                MeterDto meter = _MeterRepository.UpdateMeterConsumption(consumption);
-                return meter;
-            }
-            else if (eventData.Type == "billing")
-            {
-                BillingDto billing = eventData.EventToBilling();
-                MeterDto meter = _MeterRepository.UpdateBillingConsumption(billing);
-                if (meter is null)
-                {
-                    return null;
-                }
-                
-                BillingResponseDto billingResponse = new BillingResponseDto
-                {
-                    MeterNumber = meter.MeterNumber,
-                    Cash = meter.Unit * 330
-                };
-
-                return billingResponse;
+                return handler.HandleEvent(eventData);
             }
 
             return null;

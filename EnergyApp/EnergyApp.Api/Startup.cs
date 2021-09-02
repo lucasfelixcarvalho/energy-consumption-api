@@ -29,7 +29,7 @@ namespace EnergyApp.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMeterRepository, MeterRepository>();            
+            services.AddSingleton<IMeterRepository, Memory_MeterRepository>();            
             services.AddScoped<IEventService, EventService>();
             services.AddScoped<IMeterService, MeterService>();
 
