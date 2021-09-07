@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Castle.DynamicProxy;
+using EnergyApp.Api.Loggers;
 using EnergyApp.Domain.Event;
-using EnergyApp.Domain.Logger;
 using EnergyApp.Domain.Meter;
 using EnergyApp.Infra.Repository;
 using Microsoft.AspNetCore.Builder;
@@ -31,12 +31,12 @@ namespace EnergyApp.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddSingleton<IMeterRepository, Memory_MeterRepository>();
-            services.AddSingleton(new ProxyGenerator());
+            services.AddSingleton(new ProxyGenerator());            
+            services.AddSingleton<IInterceptor, FileLogger>();
 
-            services.AddScoped<IInterceptor, Logger>();            
-            services.AddScoped<IMeterService, MeterService>();
+            AddLoggedSingleton<IMeterRepository, Memory_MeterRepository>(services);
 
+            AddLoggedScoped<IMeterService, MeterService>(services);
             AddLoggedScoped<IEventService, EventService>(services);
 
             services.AddControllers();
@@ -74,6 +74,20 @@ namespace EnergyApp.Api
         {
             services.AddScoped<TImplementation>();
             services.AddScoped(typeof(TInterface), serviceProvider =>
+            {
+                var proxyGenerator = serviceProvider.GetRequiredService<ProxyGenerator>();
+                var actual = serviceProvider.GetRequiredService<TImplementation>();
+                var interceptors = serviceProvider.GetServices<IInterceptor>().ToArray();
+                return proxyGenerator.CreateInterfaceProxyWithTarget(typeof(TInterface), actual, interceptors);
+            });
+        }
+
+        private void AddLoggedSingleton<TInterface, TImplementation>(IServiceCollection services)
+        where TInterface : class
+        where TImplementation : class, TInterface
+        {
+            services.AddSingleton<TImplementation>();
+            services.AddSingleton(typeof(TInterface), serviceProvider =>
             {
                 var proxyGenerator = serviceProvider.GetRequiredService<ProxyGenerator>();
                 var actual = serviceProvider.GetRequiredService<TImplementation>();
