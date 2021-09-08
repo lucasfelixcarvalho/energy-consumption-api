@@ -12,7 +12,7 @@ namespace EnergyApp.Api.Loggers
 {
     public class FileLogger : IInterceptor
     {
-        private static readonly string LOG_CONFIG_FILE = @$"/Documents/Git/energy-consumption-api/EnergyApp/EnergyApp.Api/Loggers/log4net.config";
+        private static readonly string LOG_CONFIG_FILE = Path.Combine(Environment.CurrentDirectory, "Loggers\\log4net.config");
         private static readonly log4net.ILog _Log = GetLogger(typeof(FileLogger));  
 
         public FileLogger()
